@@ -13,7 +13,7 @@ function advice(w){let a=[];
  if(w.h<50)a.push("Very soft: under the commonly cited 50 ppm hardness minimum for brewing. Coffee may taste flat and sour-thin; add magnesium (e.g. Epsom salt, a few mg/L Mg) and a little bicarbonate for buffer.");
  else if(w.h>175)a.push("Hard: above the 175 ppm upper range. Dilute with distilled/RO water and/or filter to protect the machine from scale.");
  else a.push("Within the 50-175 ppm hardness range suggested by SCA water standards.");
- if(w.alk<40)a.push("Alkalinity ("+w.alk+") is under ~40 ppm target: little buffer, cup may taste sharp/acidic. A pinch of baking soda raises it (about 1.2 mg per liter adds ~1 ppm as CaCO3... check by small steps).");
+ if(w.alk<40)a.push("Alkalinity ("+w.alk+") is under ~40 ppm target: little buffer, cup may taste sharp/acidic. A pinch of baking soda raises it (roughly 1.7 mg per liter raises alkalinity by 1 ppm as CaCO3; go in small steps).");
  else if(w.alk>75)a.push("Alkalinity ("+w.alk+") is high: may mute acidity. Dilution about 1:1 with distilled water roughly halves it.");
  else a.push("Alkalinity ("+w.alk+") is in a typical brew-friendly range (about 40-75 ppm).");
  return a}

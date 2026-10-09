@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Water by zip: is your tap water good for coffee?</title>
+<meta name="description" content="Enter your US zip code to see your tap water's hardness and alkalinity and how to adjust it for brewing coffee. Runs in your browser; nothing is uploaded.">
+<style>body{font:16px/1.5 system-ui,sans-serif;max-width:640px;margin:2rem auto;padding:0 1rem;color:#222}input,button{font:inherit;padding:.5rem}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ddd;text-align:left;padding:.3rem}.v{background:#f4efe9;padding:.8rem;border-radius:6px;margin:1rem 0}footer{margin-top:3rem;font-size:.75rem;color:#777}</style></head><body>
+<h1>Water by zip</h1><p>Type a US zip code to see what is in your tap water and how to tune it for coffee. Everything runs in your browser; nothing is sent anywhere.</p>
+<form id="f"><input id="z" inputmode="numeric" maxlength="5" placeholder="Zip, e.g. 60601" aria-label="Zip code"> <button>Look up</button></form>
+<div id="out"></div>
+<p><small>Covered so far: Chicago (606xx) and Portland, OR (972xx). Coming: NYC, Seattle, LA, Philadelphia, Houston. Values are from each utility's published analyses (linked in results); your tap may differ by building plumbing or service area.</small></p>
+<script>
+const D=[{re:/^606\d\d$/,name:"Chicago (Lake Michigan water)",src:"https://www.chicago.gov/content/dam/city/depts/water/WaterQltyResultsNRpts/ccReports/cca14.pdf",yr:"Chicago comprehensive chemical analysis, June 2014 (hardness is stable for lake water, but check for a newer report)",h:133,alk:107,ca:34,mg:12.4,na:8.4,tds:155,ph:"7.8-7.9"},
+{re:/^972\d\d$/,name:"Portland, OR (Bull Run; some areas use groundwater ~80 ppm hardness)",src:"https://www.portland.gov/water/water-quality/test-results",yr:"Portland Water Bureau test results page, updated 2026-07-28",h:7,alk:29,ca:null,mg:null,na:12,tds:60,ph:"8.0-9.0"}];
+function advice(w){let a=[];
+ if(w.h<50)a.push("Very soft: under the commonly cited 50 ppm hardness minimum for brewing. Coffee may taste flat and sour-thin; add magnesium (e.g. Epsom salt, a few mg/L Mg) and a little bicarbonate for buffer.");
+ else if(w.h>175)a.push("Hard: above the 175 ppm upper range. Dilute with distilled/RO water and/or filter to protect the machine from scale.");
+ else a.push("Within the 50-175 ppm hardness range suggested by SCA water standards.");
+ if(w.alk<40)a.push("Alkalinity ("+w.alk+") is under ~40 ppm target: little buffer, cup may taste sharp/acidic. A pinch of baking soda raises it (about 1.2 mg per liter adds ~1 ppm as CaCO3... check by small steps).");
+ else if(w.alk>75)a.push("Alkalinity ("+w.alk+") is high: may mute acidity. Dilution about 1:1 with distilled water roughly halves it.");
+ else a.push("Alkalinity ("+w.alk+") is in a typical brew-friendly range (about 40-75 ppm).");
+ return a}
+document.getElementById("f").onsubmit=e=>{e.preventDefault();const z=document.getElementById("z").value.trim(),o=document.getElementById("out");
+const w=D.find(d=>d.re.test(z));
+if(!w){o.innerHTML="<p>No data for "+z.replace(/[^0-9]/g,"")+" yet. Covered: Chicago and Portland, OR.</p>";return}
+const r=(k,v,u)=>"<tr><th>"+k+"</th><td>"+(v==null?"not published":v+" "+(u||""))+"</td></tr>";
+o.innerHTML="<h2>"+w.name+"</h2><table>"+r("Hardness",w.h,"mg/L as CaCO3")+r("Alkalinity",w.alk,"mg/L as CaCO3")+r("Calcium",w.ca,"mg/L")+r("Magnesium",w.mg,"mg/L")+r("Sodium",w.na,"mg/L")+r("TDS",w.tds,"mg/L")+r("pH",w.ph)+"</table><div class=v><b>Suggestions</b><ul>"+advice(w).map(x=>"<li>"+x+"</li>").join("")+"</ul><small>General guidance, not a precise recipe.</small></div><p><small>Source: <a href='"+w.src+"'>"+w.yr+"</a></small></p>"};
+</script>
+<footer>This application was autonomously scaffolded and deployed using generative software agents. Designed for lightweight, single-purpose utility. Curated and maintained by @maxim-k.</footer></body></html>

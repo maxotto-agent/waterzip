@@ -5,7 +5,7 @@
 <h1>Water by zip</h1><p>Type a US zip code to see what is in your tap water and how to tune it for coffee. Everything runs in your browser; nothing is sent anywhere.</p>
 <form id="f"><input id="z" inputmode="numeric" maxlength="5" placeholder="Zip, e.g. 60601" aria-label="Zip code"> <button>Look up</button></form>
 <div id="out"></div>
-<p><small>Covered so far: Chicago (606xx), Portland, OR (972xx) Denver (802xx) and Johnson County, KS (662xx) and Clackamas River Water, OR (97015, 97086) Madison, WI (537xx) and Seattle (981xx) and New York City. Coming: LA, Philadelphia, Houston. Values are from each utility's published analyses (linked in results); your tap may differ by building plumbing or service area.</small></p>
+<p><small>Covered so far: Chicago (606xx), Portland, OR (972xx) Denver (802xx) and Johnson County, KS (662xx) and Clackamas River Water, OR (97015, 97086) Madison, WI (537xx) and Seattle (981xx) and New York City, plus Cary and Raleigh, NC. More areas are added as utilities publish usable figures; many publish hardness only. Values are from each utility's published analyses (linked in results); your tap may differ by building plumbing or service area.</small></p>
 <script>
 const D=[{re:/^(27511|27513|27518|27519)$/,name:"Cary, NC (town water; also serves parts of Apex, Morrisville)",src:"https://www.carync.gov/services-publications/water-sewer-stormwater/water/water-treatment/what-s-on-tap",yr:"Town of Cary What's on Tap page (average alkalinity 27, Ca 7.81, Mg 2.17); hardness computed from Ca and Mg",h:28,alk:27,ca:7.8,mg:2.2,na:null,tds:null,ph:"not published here"},
 {re:/^276(0\d|1[0-7])$/,name:"Raleigh, NC (Raleigh Water; surrounding towns may differ)",src:"https://raleighnc.gov/water-and-sewer/raleigh-water-reports",yr:"Raleigh Water reports page, average values (Ca 6.01, Mg 2.50, alkalinity 27.8, hardness 25)",h:25,alk:27.8,ca:6,mg:2.5,na:null,tds:null,ph:"not published here"},
@@ -27,7 +27,7 @@ function advice(w){let a=[];
  return a}
 document.getElementById("f").onsubmit=e=>{e.preventDefault();const z=document.getElementById("z").value.trim(),o=document.getElementById("out");
 const w=D.find(d=>d.re.test(z));
-if(!w){o.innerHTML="<p>No data for "+z.replace(/[^0-9]/g,"")+" yet. Covered: Chicago and Portland, OR.</p>";return}
+if(!w){o.innerHTML="<p>No data for "+z.replace(/[^0-9]/g,"")+" yet. See the list of covered areas above.</p>";return}
 const r=(k,v,u)=>"<tr><th>"+k+"</th><td>"+(v==null?"not published":v+" "+(u||""))+"</td></tr>";
 o.innerHTML="<h2>"+w.name+"</h2><table>"+r("Hardness",w.h,"mg/L as CaCO3")+r("Alkalinity",w.alk,"mg/L as CaCO3")+r("Calcium",w.ca,"mg/L")+r("Magnesium",w.mg,"mg/L")+r("Sodium",w.na,"mg/L")+r("TDS",w.tds,"mg/L")+r("pH",w.ph)+"</table><div class=v><b>Suggestions</b><ul>"+advice(w).map(x=>"<li>"+x+"</li>").join("")+"</ul><small>General guidance, not a precise recipe.</small></div><p><small>Source: <a href='"+w.src+"'>"+w.yr+"</a></small></p>"};
 </script>
